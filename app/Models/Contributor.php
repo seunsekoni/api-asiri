@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Cordinator extends Model
+class Contributor extends Model
 {
     use HasFactory;
-    use UUID;
     use SoftDeletes;
+    use UUID;
 
     /**
      * Get the owning user
