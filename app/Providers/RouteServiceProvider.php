@@ -20,22 +20,38 @@ class RouteServiceProvider extends ServiceProvider
     public const HOME = '/home';
 
     /**
-     * Define your route model bindings, pattern filters, etc.
+     * Define the routes for the application.
      *
      * @return void
      */
-    public function boot()
+    public function map()
     {
-        $this->configureRateLimiting();
+        $this->mapApiV1Routes();
+    }
 
-        $this->routes(function () {
-            Route::prefix('api')
+    /**
+     * Define the "api/v1" routes for the application.
+     *
+     * These routes are typically stateless.
+     *
+     * @return void
+     */
+    protected function mapApiV1Routes()
+    {
+        Route::prefix('api/v1/admin')
                 ->middleware('api')
-                ->group(base_path('routes/api.php'));
+                ->namespace($this->namespace)
+                ->group(base_path('routes/v1/admin.php'));
 
-            Route::middleware('web')
-                ->group(base_path('routes/web.php'));
-        });
+        Route::prefix('api/v1/user')
+            ->middleware('api')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/v1/user.php'));
+
+        Route::prefix('api/v1/generic')
+                ->middleware('api')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/v1/generic.php'));
     }
 
     /**
