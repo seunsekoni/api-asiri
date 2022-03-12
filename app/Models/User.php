@@ -47,4 +47,24 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Get the cordinator details associated with the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function cordinator()
+    {
+        return $this->hasOne(Cordinator::class);
+    }
+
+    /**
+     * Get the contributor details associated with the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function contributor()
+    {
+        return $this->hasOne(Contributor::class);
+    }
 }
