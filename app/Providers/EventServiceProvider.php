@@ -22,6 +22,9 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\User\ResetPassword::class => [
             \App\Listeners\User\SendResetPasswordConfirmation::class,
         ],
+        \App\Events\Admin\ResetPassword::class => [
+            \App\Listeners\Admin\SendResetPasswordConfirmation::class
+        ],
     ];
 
     /**
