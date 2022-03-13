@@ -31,10 +31,9 @@ class RegisterRequest extends FormRequest
             'phone' => 'nullable',
             'password' => [
                 'required',
-                'confirmed',
                 Password::defaults(),
             ],
-            'account_type' => 'in:contributor,cordinator',
+            'account_type' => 'required|in:contributor,cordinator',
         ];
     }
 }
