@@ -8,6 +8,10 @@ class CreateMediaTable extends Migration
 {
     public function up()
     {
+        if (Schema::hasTable('media')) {
+            return;
+        }
+
         Schema::create('media', function (Blueprint $table) {
             $table->bigIncrements('id');
 
