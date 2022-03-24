@@ -34,6 +34,7 @@ class RegisterRequest extends FormRequest
                 Password::defaults(),
             ],
             'account_type' => 'required|in:contributor,cordinator',
+            'profile_picture' => 'nullable|image',
         ];
     }
 }

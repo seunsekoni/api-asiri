@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V1\User\Auth;
 
+use App\Enums\MediaCollection;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\RegisterRequest;
 use App\Models\Contributor;
@@ -29,6 +30,10 @@ class RegisterController extends Controller
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
         $user->save();
+
+        if ($request->profile_picture) {
+            $user->addMediaFromRequest('profile_picture')->toMediaCollection(MediaCollection::PROFILEPICTURE);
+        }
 
         if ($request->account_type == 'contributor') {
             $contributor = new Contributor();
