@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\V1\User\AccountController;
 use App\Http\Controllers\V1\User\Auth\ForgotPasswordController;
 use App\Http\Controllers\V1\User\Auth\LoginController;
 use App\Http\Controllers\V1\User\Auth\RegisterController;
@@ -22,4 +23,8 @@ Route::group(['middleware' => ['auth:user']], function () {
         Route::post('/email/resend-verification', [VerificationController::class, 'resend']);
         Route::post('/logout', [LoginController::class, 'logout'])->name('user.logout');
     });
+
+    Route::get('/profile', [AccountController::class, 'profile'])->name('user.profile');
+    Route::post('/update/profile', [AccountController::class, 'update'])->name('user.update.profile');
+    Route::post('/update/password', [AccountController::class, 'updatePassword'])->name('user.update.password');
 });
