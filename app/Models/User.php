@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\MediaCollection;
+use App\Enums\MediaTypes;
 use App\Notifications\User\ResetPassword;
 use App\Notifications\User\VerifyEmail;
 use App\Traits\UUID;
@@ -11,11 +13,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, HasMedia
 {
     use HasApiTokens;
     use HasFactory;
+    use InteractsWithMedia;
     use Notifiable;
     use UUID;
     use SoftDeletes;
@@ -39,6 +44,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $hidden = [
         'password',
         'remember_token',
+        'media',
     ];
 
     /**
@@ -51,6 +57,15 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
+     * Indicates custom attributes to append to model.
+     *
+     * @var array
+     */
+    public $appends = [
+        'profile_picture',
+    ];
+
+    /**
      * Get the full name of the user.
      *
      * @return string
@@ -58,6 +73,29 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getFullNameAttribute()
     {
         return "{$this->first_name} {$this->last_name}";
+    }
+
+    /**
+     * Get profile picture attribute.
+     *
+     * @return string
+     */
+    public function getProfilePictureAttribute()
+    {
+        return $this->getFirstMediaUrl(MediaCollection::PROFILEPICTURE);
+    }
+
+    /**
+     * Registers media collections
+     *
+     * @return void
+     */
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection(MediaCollection::PROFILEPICTURE)
+            ->useFallbackUrl(url('/img/placeholders/avatar.png'))
+            ->acceptsMimeTypes(MediaTypes::IMAGES)
+            ->singleFile();
     }
 
     /**
